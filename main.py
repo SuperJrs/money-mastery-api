@@ -1,10 +1,10 @@
 from fastapi import FastAPI
-# from controllers.conta import router
+from controllers.conta import router
 
 
 app = FastAPI()
 
-# app.include_router(router)
+app.include_router(router)
 
 if __name__ == '__main__':
     import uvicorn
