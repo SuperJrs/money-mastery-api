@@ -2,12 +2,13 @@ FROM python:3.11
 
 ENV PYTHONUNBUFFERED 1
 
-RUN mkdir app/
-
 WORKDIR /app/
 
-ADD . . 
+ADD . .
 
-RUN pip install -r requirements.txt
+RUN pip install poetry
+RUN poetry install
 
-CMD ["python3", "main.py"]
+WORKDIR /app/money_mastery/
+
+CMD ["sh", "-c", "poetry run python main.py"]
