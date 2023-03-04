@@ -4,7 +4,7 @@ from .configs import settings
 
 
 class Database:
-    DB_URL = f'postgresql://{settings.USER}:{settings.PASSWORD}@{settings.HOST}:{settings.PORT}/{settings.DATABASE}'
+    DB_URL = f'postgresql://{settings.USER}:{settings.PASSWORD}@{settings.HOST}/{settings.DATABASE}'
 
     engine = create_engine(DB_URL)
 
