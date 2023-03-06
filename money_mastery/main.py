@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from controllers.conta import router
 
+from controllers.conta import router
 
 app = FastAPI()
 
