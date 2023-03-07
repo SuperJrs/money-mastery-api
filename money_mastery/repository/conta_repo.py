@@ -1,26 +1,26 @@
 from fastapi import HTTPException, status
-from sqlalchemy.orm import Session
+from sqlalchemy import select, insert, delete
 
+from ..core.database import database
 from ..models.conta_model import Conta
 from ..schemas.conta_schema import ContaSchema
 
 
 class ContaRepo:
     @staticmethod
-    def create(nova_conta: ContaSchema, db: Session):
+    async def create(nova_conta: ContaSchema):
         try:
-            conta = Conta(**nova_conta.dict())
-
-            db.add(conta)
-            db.commit()
+            insert_conta = insert(Conta).values(**nova_conta.dict())
+            await database.execute(insert_conta)
+            
         except Exception as err:
             raise HTTPException(detail=str(err), status_code=500)
-        return conta
+        return nova_conta
 
     @staticmethod
-    def gel_all(db: Session):
+    async def gel_all():
         try:
-            contas = db.query(Conta).all()
+            contas = await database.fetch_all(select(Conta))
         except Exception as err:
             raise HTTPException(detail=str(err), status_code=500)
 
@@ -33,11 +33,10 @@ class ContaRepo:
         return contas
     
     @staticmethod
-    def get_by_cpf(cpf: int, db: Session):
+    async def get_by_cpf(cpf: int):
         try:
-            conta = (
-                db.query(Conta).filter(Conta.cpf_proprietario == cpf).first()
-            )
+            query = select(Conta).where(Conta.cpf_proprietario == cpf)
+            conta = await database.fetch_one(query)
         except Exception as err:
             raise HTTPException(detail=str(err), status_code=500)
 
@@ -46,20 +45,20 @@ class ContaRepo:
                 detail=f'Não existe nenhuma conta onde o proprietario possui o cpf={cpf}',
                 status_code=404,
             )
-
+            
         return conta
     
     @staticmethod
-    def destroy(cpf: int, db: Session):
+    async def destroy(cpf: int):
         try:
-            conta = (
-                db.query(Conta).filter(Conta.cpf_proprietario == cpf).first()
-            )
+            query = select(Conta).where(Conta.cpf_proprietario == cpf)
+            conta = await database.fetch_one(query)
             nome_proprietario = ''
             if conta:
-                nome_proprietario = conta.nome_proprietario
-                db.delete(conta)
-                db.commit()
+                nome_proprietario = conta.nome_proprietario  # type: ignore
+                print(conta)
+                delete_sql = delete(Conta).where(Conta.cpf_proprietario == cpf)
+                await database.execute(delete_sql)
         except Exception as err:
             raise HTTPException(detail=str(err), status_code=500)
 
@@ -70,5 +69,5 @@ class ContaRepo:
             )
 
         return {
-            'msg': f'conta do {nome_proprietario} foi deletada com sucesso'
+            'msg': f'conta do(a) {nome_proprietario} foi deletada com sucesso'
         }

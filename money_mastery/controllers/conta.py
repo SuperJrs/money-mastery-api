@@ -1,6 +1,5 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, status
 
-from ..core.deps import get_session
 from ..repository.conta_repo import ContaRepo
 from ..schemas.conta_schema import ContaSchema
 
@@ -9,28 +8,28 @@ repo = ContaRepo()
 
 
 @router.get('/', response_model=list[ContaSchema])
-def obter_contas(db=Depends(get_session)):
-    result = repo.gel_all(db)
+async def obter_contas():
+    result = await repo.gel_all()
     return result
 
 
 @router.get(
     '/{cpf}', 
     response_description='Obtem uma conta através do CPF do proprietario',
+    response_model=ContaSchema,
     status_code=200
 )
-def obter_conta(cpf: int, db=Depends(get_session)) -> ContaSchema:
-    return repo.get_by_cpf(cpf, db)
+async def obter_conta(cpf: int):
+    return await repo.get_by_cpf(cpf)
 
 
 @router.post(
     '/', response_model=ContaSchema, status_code=status.HTTP_201_CREATED
 )
-def adicionar_nova_conta(nova_conta: ContaSchema, db=Depends(get_session)):
-    return repo.create(nova_conta, db)
+async def adicionar_nova_conta(nova_conta: ContaSchema):
+    return await repo.create(nova_conta)
 
 
 @router.delete('/{cpf}', status_code=status.HTTP_202_ACCEPTED)
-def deletar_conta(cpf: int, db=Depends(get_session)):
-    result = repo.destroy(cpf, db)
-    return result
+async def deletar_conta(cpf: int):
+    return await repo.destroy(cpf)
