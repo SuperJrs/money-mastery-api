@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "money-mastery"
+version = "0.1.0"
+description = "API REST para controle financeiro"
+authors = ["LamequeFernandes <lamequesao@gmail.com>"]
+readme = "README.md"
+packages = [{include = "money_mastery"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = {extras = ["all"], version = "^0.92.0"}
+sqlalchemy = "1.4.44"
+psycopg2-binary = "^2.9.5"
+asyncpg = "^0.27.0"
+databases = "^0.7.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2.2"
+blue = "^0.9.1"
+isort = "^5.12.0"
+faker = "^17.6.0"
+pytest-asyncio = "^0.20.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
