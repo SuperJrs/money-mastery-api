@@ -193,6 +193,31 @@ files = [
 ]
 
 [[package]]
+name = "databases"
+version = "0.7.0"
+description = "Async database support for Python."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "databases-0.7.0-py3-none-any.whl", hash = "sha256:cf5da4b8a3e3cd038c459529725ebb64931cbbb7a091102664f20ef8f6cefd0d"},
+    {file = "databases-0.7.0.tar.gz", hash = "sha256:ea2d419d3d2eb80595b7ceb8f282056f080af62efe2fb9bcd83562f93ec4b674"},
+]
+
+[package.dependencies]
+sqlalchemy = ">=1.4.42,<1.5"
+
+[package.extras]
+aiomysql = ["aiomysql"]
+aiopg = ["aiopg"]
+aiosqlite = ["aiosqlite"]
+asyncmy = ["asyncmy"]
+asyncpg = ["asyncpg"]
+mysql = ["aiomysql"]
+postgresql = ["asyncpg"]
+sqlite = ["aiosqlite"]
+
+[[package]]
 name = "dnspython"
 version = "2.3.0"
 description = "DNS toolkit"
@@ -925,6 +950,25 @@ pluggy = ">=0.12,<2.0"
 testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.7.2)", "requests", "xmlschema"]
 
 [[package]]
+name = "pytest-asyncio"
+version = "0.20.3"
+description = "Pytest support for asyncio"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "pytest-asyncio-0.20.3.tar.gz", hash = "sha256:83cbf01169ce3e8eb71c6c278ccb0574d1a7a3bb8eaaf5e50e0ad342afb33b36"},
+    {file = "pytest_asyncio-0.20.3-py3-none-any.whl", hash = "sha256:f129998b209d04fcc65c96fc85c11e5316738358909a8399e93be553d7656442"},
+]
+
+[package.dependencies]
+pytest = ">=6.1.0"
+
+[package.extras]
+docs = ["sphinx (>=5.3)", "sphinx-rtd-theme (>=1.0)"]
+testing = ["coverage (>=6.2)", "flaky (>=3.5.0)", "hypothesis (>=5.7.1)", "mypy (>=0.931)", "pytest-trio (>=0.7.0)"]
+
+[[package]]
 name = "python-dateutil"
 version = "2.8.2"
 description = "Extensions to the standard Python datetime module"
@@ -1437,4 +1481,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "bbff4f900249c90208ad65577d12ca034c376b18553e2f1c75fb575c4649361a"
+content-hash = "f8d04470fdecef4d5fd39ffe62d6006dbcad11389dc2d2b3029c2ac248068fb6"

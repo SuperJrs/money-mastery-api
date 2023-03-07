@@ -5,7 +5,6 @@ from money_mastery.main import app
 
 
 @pytest.fixture(scope='module')
-def test_app():
-    client = TestClient(app)
-    yield client
-    
+def client():
+    with TestClient(app) as c:
+        yield c
