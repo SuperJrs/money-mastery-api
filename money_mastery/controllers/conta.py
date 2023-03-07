@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, status
-from core.deps import get_session
-from repository.conta_repo import ContaRepo
-from schemas.conta_schema import ContaSchema
+
+from ..core.deps import get_session
+from ..repository.conta_repo import ContaRepo
+from ..schemas.conta_schema import ContaSchema
 
 router = APIRouter(prefix='/conta')
 repo = ContaRepo()
@@ -11,6 +12,15 @@ repo = ContaRepo()
 def obter_contas(db=Depends(get_session)):
     result = repo.gel_all(db)
     return result
+
+
+@router.get(
+    '/{cpf}', 
+    response_description='Obtem uma conta através do CPF do proprietario',
+    status_code=200
+)
+def obter_conta(cpf: int, db=Depends(get_session)) -> ContaSchema:
+    return repo.get_by_cpf(cpf, db)
 
 
 @router.post(

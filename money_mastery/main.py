@@ -1,8 +1,12 @@
 from fastapi import FastAPI
 
-from controllers.conta import router
+from money_mastery.controllers.conta import router
 
 app = FastAPI()
+
+@app.get("/", status_code=200)
+async def teste_run():
+    return dict(msg="A API está no ar!")
 
 app.include_router(router)
 
