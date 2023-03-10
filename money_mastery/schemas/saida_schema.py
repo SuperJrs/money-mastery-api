@@ -1,6 +1,6 @@
 from enum import Enum
-from pydantic import BaseModel
 from datetime import date
+from pydantic import BaseModel
 
 
 class CategoriaEnum(str, Enum):
