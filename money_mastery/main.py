@@ -5,17 +5,18 @@ from money_mastery.core.database import database
 
 app = FastAPI()
 
-@app.get("/", status_code=200)
+
+@app.get('/', status_code=200)
 async def teste_run():
-    return dict(msg="A API está no ar!")
+    return dict(msg='A API está no ar!')
 
 
-@app.on_event("startup")
+@app.on_event('startup')
 async def startup():
     await database.connect()
 
 
-@app.on_event("shutdown")
+@app.on_event('shutdown')
 async def shutdown():
     await database.disconnect()
 

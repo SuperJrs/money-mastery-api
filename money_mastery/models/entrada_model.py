@@ -1,12 +1,5 @@
-from sqlalchemy import (
-    BigInteger,
-    Column,
-    Date,
-    Enum,
-    ForeignKey,
-    Numeric,
-    String,
-)
+from sqlalchemy import (BigInteger, Column, Date, Enum, ForeignKey, Numeric,
+                        String)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 

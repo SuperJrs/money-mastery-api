@@ -1,5 +1,6 @@
-from enum import Enum
 from datetime import date
+from enum import Enum
+
 from pydantic import BaseModel
 
 
@@ -11,7 +12,7 @@ class CategoriaEnum(str, Enum):
     transporte = 'TRANSPORTE'
     educacao = 'EDUCACAO'
     outro = 'OUTRO'
-    
+
 
 class FormaPagamentoEnum(str, Enum):
     credito = 'CREDITO'
@@ -20,7 +21,7 @@ class FormaPagamentoEnum(str, Enum):
     dinheiro = 'DINHEIRO'
     reserva = 'RESERVA'
     emprestimo = 'EMPRESTIMO'
-    
+
 
 class SaidaSchema(BaseModel):
     id_saida: int
@@ -31,6 +32,6 @@ class SaidaSchema(BaseModel):
     dt_hora_saida: date
     cpf_proprietario: int
     id_reserva: int
-    
+
     class Config:
         orm_model = True
