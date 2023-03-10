@@ -1,26 +1,30 @@
 from fastapi import HTTPException, status
+from databases import Database
 from sqlalchemy import select, insert, delete
 
-from ..core.database import database
+# from ..core.database import database
 from ..models.conta_model import Conta
 from ..schemas.conta_schema import ContaSchema
+from ..auth.crypt import hash_password
 
 
 class ContaRepo:
-    @staticmethod
-    async def create(nova_conta: ContaSchema):
+    def __init__(self, database: Database):
+        self.database = database
+    
+    async def create(self, nova_conta: ContaSchema):
         try:
+            nova_conta.senha = hash_password(nova_conta.senha)
             insert_conta = insert(Conta).values(**nova_conta.dict())
-            await database.execute(insert_conta)
+            await self.database.execute(insert_conta)
             
         except Exception as err:
             raise HTTPException(detail=str(err), status_code=500)
         return nova_conta
 
-    @staticmethod
-    async def gel_all():
+    async def gel_all(self):
         try:
-            contas = await database.fetch_all(select(Conta))
+            contas = await self.database.fetch_all(select(Conta))
         except Exception as err:
             raise HTTPException(detail=str(err), status_code=500)
 
@@ -32,11 +36,10 @@ class ContaRepo:
 
         return contas
     
-    @staticmethod
-    async def get_by_cpf(cpf: int):
+    async def get_by_cpf(self, cpf: int):
         try:
             query = select(Conta).where(Conta.cpf_proprietario == cpf)
-            conta = await database.fetch_one(query)
+            conta = await self.database.fetch_one(query)
         except Exception as err:
             raise HTTPException(detail=str(err), status_code=500)
 
@@ -48,17 +51,31 @@ class ContaRepo:
             
         return conta
     
-    @staticmethod
-    async def destroy(cpf: int):
+    async def get_by_email(self, email_conta: str):
+        try:
+            query = select(Conta).where(Conta.email == email_conta)
+            conta = await self.database.fetch_one(query)
+        except Exception as err:
+            raise HTTPException(detail=str(err), status_code=500)
+
+        if not conta:
+            raise HTTPException(
+                detail=f'Não existe nenhuma conta com esse email',
+                status_code=404,
+            )
+            
+        return conta
+    
+    async def destroy(self, cpf: int):
         try:
             query = select(Conta).where(Conta.cpf_proprietario == cpf)
-            conta = await database.fetch_one(query)
+            conta = await self.database.fetch_one(query)
             nome_proprietario = ''
             if conta:
                 nome_proprietario = conta.nome_proprietario  # type: ignore
                 print(conta)
                 delete_sql = delete(Conta).where(Conta.cpf_proprietario == cpf)
-                await database.execute(delete_sql)
+                await self.database.execute(delete_sql)
         except Exception as err:
             raise HTTPException(detail=str(err), status_code=500)
 

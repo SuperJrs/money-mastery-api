@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from money_mastery.controllers.conta import router
+from money_mastery.controllers import router
 from money_mastery.core.database import database
 
 app = FastAPI()
