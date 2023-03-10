@@ -4,7 +4,7 @@ from ...repository.conta_repo import ContaRepo
 from ...schemas.conta_schema import ContaSchema, ContaSchemaOptional
 from ...core.database import database
 
-router = APIRouter(prefix='/conta', tags=['Conta'])
+router = APIRouter(prefix='/conta', tags=['Admin'])
 repo = ContaRepo(database)
 
 
@@ -24,20 +24,13 @@ async def obter_conta(cpf: int):
     return await repo.get_by_cpf(cpf)
 
 
-@router.post(
-    '/', response_model=ContaSchema, status_code=status.HTTP_201_CREATED
-)
-async def adicionar_nova_conta(nova_conta: ContaSchema):
-    return await repo.create(nova_conta)
-
-
 @router.put(
     '/{cpf}',
     response_model=ContaSchemaOptional,
     response_description='Atualiza a conta de um usuario'
 )
-async def alterar_conta(conta_alterada: ContaSchemaOptional):
-    pass
+async def alterar_conta(cpf: int, conta_alterada: ContaSchemaOptional):
+    return await repo.update(cpf, conta_alterada)
 
 
 @router.delete(

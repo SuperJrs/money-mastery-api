@@ -1,10 +1,9 @@
 from fastapi import HTTPException, status
 from databases import Database
-from sqlalchemy import select, insert, delete
+from sqlalchemy import select, insert, delete, update
 
-# from ..core.database import database
 from ..models.conta_model import Conta
-from ..schemas.conta_schema import ContaSchema
+from ..schemas.conta_schema import ContaSchema, ContaSchemaOptional
 from ..auth.crypt import hash_password
 
 
@@ -70,9 +69,7 @@ class ContaRepo:
         try:
             query = select(Conta).where(Conta.cpf_proprietario == cpf)
             conta = await self.database.fetch_one(query)
-            nome_proprietario = ''
             if conta:
-                nome_proprietario = conta.nome_proprietario  # type: ignore
                 print(conta)
                 delete_sql = delete(Conta).where(Conta.cpf_proprietario == cpf)
                 await self.database.execute(delete_sql)
@@ -86,5 +83,27 @@ class ContaRepo:
             )
 
         return {
-            'msg': f'conta do(a) {nome_proprietario} foi deletada com sucesso'
+            'msg': 'Conta apagada com sucesso!'
         }
+        
+    async def update(self, cpf: int, conta_alterada: ContaSchemaOptional):
+        print()
+        try:
+            conta_alterada_dict: dict = conta_alterada.dict()
+            
+            for key in conta_alterada.dict():
+                if not conta_alterada_dict[key]:
+                    del conta_alterada_dict[key]
+            
+            update_conta =  update(Conta).\
+                            where(Conta.cpf_proprietario == cpf).\
+                            values(**conta_alterada_dict)
+                            
+            await self.database.execute(update_conta)
+            conta = await self.get_by_cpf(cpf)
+        except Exception as err:
+            raise HTTPException(
+                status_code=500,
+                detail=err
+            )
+        return conta

@@ -21,7 +21,6 @@ class ContaSchemaOptional(BaseModel):
     dt_nasc_proprietario: Optional[date]
     telefone: Optional[int]
     email: Optional[EmailStr]
-    senha: Optional[str]
 
     class Config:
         orm_mode = True

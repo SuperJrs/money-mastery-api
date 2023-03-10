@@ -8,6 +8,11 @@ from ..core.database import database
 from ..models.conta_model import Conta
 from ..core.configs import settings
 from ..auth.service import AuthService
+from ..core.database import Database
+
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/user/login")
+db = Database()
 
 
 def get_jwt_handler() -> JWTHandler:
@@ -17,7 +22,6 @@ def get_jwt_handler() -> JWTHandler:
 def get_auth_service() -> AuthService:
     return AuthService();
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 
 async def get_current_user(
     token: str = Depends(oauth2_scheme), 
@@ -40,3 +44,11 @@ async def get_current_user(
     if conta is None:
         raise credentials_exception
     return conta
+
+
+async def get_session():
+    session = db.session()
+    try:
+        yield session
+    finally:
+        await session.close() # type: ignore
