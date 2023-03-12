@@ -26,7 +26,7 @@ async def obter_conta(cpf: int):
 
 @router.put(
     '/{cpf}',
-    response_model=ContaSchemaOptional,
+    response_model=ContaSchema,
     response_description='Atualiza a conta de um usuario',
 )
 async def alterar_conta(cpf: int, conta_alterada: ContaSchemaOptional):

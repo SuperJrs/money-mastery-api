@@ -10,17 +10,19 @@ class ContaSchema(BaseModel):
     dt_nasc_proprietario: date
     telefone: Optional[int]
     email: EmailStr
-    senha: str
 
     class Config:
         orm_mode = True
+        
+
+class ContaSchemaFull(ContaSchema):
+    senha: str
 
 
 class ContaSchemaOptional(BaseModel):
     nome_proprietario: Optional[str]
     dt_nasc_proprietario: Optional[date]
     telefone: Optional[int]
-    email: Optional[EmailStr]
 
     class Config:
         orm_mode = True

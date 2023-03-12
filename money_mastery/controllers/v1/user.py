@@ -5,14 +5,14 @@ from ...auth.service import AuthService
 from ...core.database import database
 from ...models.conta_model import Conta
 from ...repository.conta_repo import ContaRepo
-from ...schemas.conta_schema import ContaSchema, ContaSchemaOptional
+from ...schemas.conta_schema import ContaSchema, ContaSchemaOptional, ContaSchemaFull
 from ..deps import get_auth_service, get_current_user
 
 router = APIRouter(prefix='/user', tags=['Usuário'])
 repo = ContaRepo(database)
 
 
-@router.post('/login')
+@router.post('/login', status_code=200)
 async def login_for_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(),
     auth_service: AuthService = Depends(get_auth_service),
@@ -37,7 +37,7 @@ async def login_for_access_token(
     response_description='Criar conta',
     status_code=status.HTTP_201_CREATED,
 )
-async def adicionar_nova_conta(nova_conta: ContaSchema):
+async def adicionar_nova_conta(nova_conta: ContaSchemaFull):
     return await repo.create(nova_conta)
 
 
