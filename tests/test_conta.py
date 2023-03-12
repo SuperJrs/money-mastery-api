@@ -1,32 +1,46 @@
 from faker import Faker
 import json
-import random
-from typing import Any
-
+from urllib.parse import urlencode
 
 faker = Faker()
 
-conta_random: dict['str', Any] = dict(
-    cpf_proprietario = random.randint(10000000000, 99999999999),
-    nome_proprietario = faker.name(),
-    dt_nasc_proprietario = str(faker.date_between(
-            start_date='-100y', end_date='-18y'
-        )),
-    telefone = random.randint(10000000000, 99999999999),
-    email = faker.email(),
-    senha = faker.password()
-)
 
-
-def test_post_conta(client):
-    response = client.post('/conta', content=json.dumps(conta_random))
+def test_post_conta(client, conta_random, conta_sem_senha):
+    response = client.post('/api/v1/user/register', content=json.dumps(conta_random))
     
     assert response.status_code == 201
-    assert response.json() == conta_random
+    assert response.json() == conta_sem_senha
     
 
-def test_get_conta_by_cpf(client):
-    response = client.get(f'/conta/{conta_random["cpf_proprietario"]}')
+def test_get_conta_by_cpf(client, conta_sem_senha):
+    response = client.get(f'/api/v1/conta/{conta_sem_senha["cpf_proprietario"]}')
+
+    assert response.status_code == 200
+    assert response.json() == conta_sem_senha
+
+
+def test_login_in_conta(client, conta_random):
+    form_data = urlencode({
+        'username': conta_random['email'],
+        'password': conta_random['senha']
+    }).encode('utf-8')
+    
+    response = client.post(
+        '/api/v1/user/login', 
+        content=form_data.decode(),
+        headers={'Content-Type': 'application/x-www-form-urlencoded'}
+    )
     
     assert response.status_code == 200
-    assert response.json() == conta_random
+    assert 'access_token' in response.json()
+
+
+def test_me_conta(client, conta_sem_senha, get_token):
+    response = client.get(
+        '/api/v1/user/me', 
+        headers={'Authorization': f'Bearer {get_token}'}
+    )
+    
+    assert response.status_code == 200
+    assert response.json() == conta_sem_senha
+    
