@@ -8,13 +8,11 @@ import pytest, copy, random
 from money_mastery.main import app
 
 
-faker = Faker()
+faker: Faker = Faker()
 
 
 @pytest.fixture(scope='module')
 def client() -> Generator[TestClient, None, None]:
-    teste = TestClient(app)
-    # teste.get(auth=)
     with TestClient(app) as c:
         yield c
 
@@ -35,20 +33,20 @@ def conta_random():
 
 
 @pytest.fixture
-def conta_sem_senha(conta_random):
-    clone_conta = copy.deepcopy(conta_random)
+def conta_sem_senha(conta_random: dict[str, Any]) -> dict[str, Any]:
+    clone_conta: dict[str, Any] = copy.deepcopy(conta_random)
     del clone_conta['senha']
     return clone_conta
 
 
 @pytest.fixture(scope='module')
-def get_token(client, conta_random):
-    form_data = urlencode({
+def get_token(client: TestClient, conta_random: dict[str, Any]) -> str:
+    form_data: bytes = urlencode({
         'username': conta_random['email'],
         'password': conta_random['senha']
     }).encode('utf-8')
     
-    response = client.post(
+    response: dict[str, str] = client.post(
         '/api/v1/user/login', 
         content=form_data.decode(),
         headers={'Content-Type': 'application/x-www-form-urlencoded'}

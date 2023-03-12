@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "money_mastery"}]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.11.2"
 fastapi = {extras = ["all"], version = "^0.92.0"}
 sqlalchemy = "1.4.44"
 psycopg2-binary = "^2.9.5"
