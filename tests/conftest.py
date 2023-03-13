@@ -18,8 +18,8 @@ def client() -> Generator[TestClient, None, None]:
 
 
 @pytest.fixture(scope='module')
-def conta_random():
-    conta_random: dict['str', Any] = dict(
+def conta_random() -> dict[str, Any]:
+    conta_random: dict[str, Any] = dict(
         cpf_proprietario = random.randint(10000000000, 99999999999),
         nome_proprietario = faker.name(),
         dt_nasc_proprietario = str(faker.date_between(

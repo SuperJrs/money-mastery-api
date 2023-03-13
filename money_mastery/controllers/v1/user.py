@@ -48,8 +48,9 @@ async def get_user_current(account_current: Conta = Depends(get_current_user)):
 
 @router.put(
     '/',
-    response_model=ContaSchemaOptional,
+    response_model=ContaSchema,
     response_description='Atualizar conta',
+    status_code=status.HTTP_202_ACCEPTED
 )
 async def alterar_conta(
     conta_alterada: ContaSchemaOptional,
