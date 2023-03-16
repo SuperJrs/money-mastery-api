@@ -22,12 +22,11 @@ CREATE TABLE CONTA (
 );
 
 CREATE TABLE RESERVA (
-    id_reserva          BIGINT NOT NULL,
+    id_reserva          SERIAL PRIMARY KEY,
     dt_criacao          DATE NOT NULL,
     titulo_reserva      VARCHAR(30) NOT NULL,
     descricao_reserva   VARCHAR(100),
     cpf_proprietario    BIGINT NOT NULL,
-    CONSTRAINT RESERVA_PK PRIMARY KEY (id_reserva),
     CONSTRAINT RESERVA_CONTA_FK FOREIGN KEY (cpf_proprietario)
         REFERENCES CONTA(cpf_proprietario)
         ON UPDATE RESTRICT
@@ -35,7 +34,7 @@ CREATE TABLE RESERVA (
 );
 
 CREATE TABLE SAIDA (
-    id_saida            BIGINT NOT NULL,
+    id_saida            SERIAL PRIMARY KEY,
     valor_saida         DECIMAL(9,2) NOT NULL,
     categoria           categoria NOT NULL,
     descricao_saida     VARCHAR(100),
@@ -43,7 +42,6 @@ CREATE TABLE SAIDA (
     dt_hora_saida       TIMESTAMP NOT NULL,
     cpf_proprietario    BIGINT NOT NULL,
     id_reserva          BIGINT,
-    CONSTRAINT SAIDA_PK PRIMARY KEY (id_saida),
     CONSTRAINT SAIDA_CONTA_FK FOREIGN KEY (cpf_proprietario)
         REFERENCES CONTA(cpf_proprietario)
         ON UPDATE RESTRICT
@@ -55,11 +53,10 @@ CREATE TABLE SAIDA (
 );
 
 CREATE TABLE LEMBRETE (
-    id_lembrete         BIGINT NOT NULL,
+    id_lembrete         SERIAL PRIMARY KEY,
     dt_lembrete         DATE NOT NULL,
     titulo_lembrete     VARCHAR(30) NOT NULL,
     cpf_proprietario    BIGINT NOT NULL,
-    CONSTRAINT LEMBRETE_PK PRIMARY KEY (id_lembrete),
     CONSTRAINT LEMBRETE_CONTA_FK FOREIGN KEY (cpf_proprietario)
         REFERENCES CONTA(cpf_proprietario)
         ON UPDATE RESTRICT
@@ -67,13 +64,12 @@ CREATE TABLE LEMBRETE (
 );
 
 CREATE TABLE EMPRESTIMO (
-    id_emprestimo       BIGINT NOT NULL,
+    id_emprestimo       SERIAL PRIMARY KEY,
     nome_devedor        VARCHAR(120) NOT NULL,
     dt_emprestimo       DATE NOT NULL,
     dt_limite_pg        DATE,
     cpf_proprietario    BIGINT NOT NULL,
     id_saida            BIGINT NOT NULL,
-    CONSTRAINT EMPRESTIMO_PK PRIMARY KEY (id_emprestimo),
     CONSTRAINT EMPRESTIMO_CONTA_FK FOREIGN KEY (cpf_proprietario)
         REFERENCES CONTA(cpf_proprietario)
         ON UPDATE RESTRICT
@@ -85,7 +81,7 @@ CREATE TABLE EMPRESTIMO (
 );
 
 CREATE TABLE ENTRADA (
-    id_entrada          BIGINT NOT NULL,
+    id_entrada          SERIAL PRIMARY KEY,
     valor_entrada       DECIMAL(9,2) NOT NULL,
     origem              origem NOT NULL,
     descricao_entrada   VARCHAR(100),
@@ -93,7 +89,6 @@ CREATE TABLE ENTRADA (
     cpf_proprietario    BIGINT NOT NULL,
     id_reserva          BIGINT,
     id_emprestimo       BIGINT,
-    CONSTRAINT ENTRADA_PK PRIMARY KEY (id_entrada),
     CONSTRAINT ENTRADA_CONTA_FK FOREIGN KEY (cpf_proprietario)
         REFERENCES CONTA(cpf_proprietario)
         ON UPDATE RESTRICT
@@ -109,10 +104,9 @@ CREATE TABLE ENTRADA (
 );
 
 CREATE TABLE META (
-    id_meta             BIGINT NOT NULL,
+    id_meta             SERIAL PRIMARY KEY,
     valor_meta          DECIMAL(9,2) NOT NULL,
     cpf_proprietario    BIGINT NOT NULL,
-    CONSTRAINT META_PK PRIMARY KEY (id_meta),
     CONSTRAINT META_CONTA_FK FOREIGN KEY (cpf_proprietario)
         REFERENCES CONTA(cpf_proprietario)
         ON UPDATE RESTRICT
@@ -120,11 +114,10 @@ CREATE TABLE META (
 );
 
 CREATE TABLE GASTO_BASE (
-    id_gasto_base       BIGINT NOT NULL,
+    id_gasto_base       SERIAL PRIMARY KEY,
     titulo_gasto        VARCHAR(30) NOT NULL,
     valor_gasto         DECIMAL(9,2) NOT NULL,
     cpf_proprietario    BIGINT NOT NULL,
-    CONSTRAINT GASTO_BASE_PK PRIMARY KEY (id_gasto_base),
     CONSTRAINT GASTO_BASE_CONTA_FK FOREIGN KEY (cpf_proprietario)
         REFERENCES CONTA(cpf_proprietario)
         ON UPDATE RESTRICT
@@ -159,12 +152,11 @@ CREATE TABLE CONTA (
 );
 
 CREATE TABLE RESERVA (
-    id_reserva          BIGINT NOT NULL,
+    id_reserva          SERIAL PRIMARY KEY,
     dt_criacao          DATE NOT NULL,
     titulo_reserva      VARCHAR(30) NOT NULL,
     descricao_reserva   VARCHAR(100),
     cpf_proprietario    BIGINT NOT NULL,
-    CONSTRAINT RESERVA_PK PRIMARY KEY (id_reserva),
     CONSTRAINT RESERVA_CONTA_FK FOREIGN KEY (cpf_proprietario)
         REFERENCES CONTA(cpf_proprietario)
         ON UPDATE RESTRICT
@@ -172,7 +164,7 @@ CREATE TABLE RESERVA (
 );
 
 CREATE TABLE SAIDA (
-    id_saida            BIGINT NOT NULL,
+    id_saida            SERIAL PRIMARY KEY,
     valor_saida         DECIMAL(9,2) NOT NULL,
     categoria           categoria NOT NULL,
     descricao_saida     VARCHAR(100),
@@ -180,7 +172,6 @@ CREATE TABLE SAIDA (
     dt_hora_saida       TIMESTAMP NOT NULL,
     cpf_proprietario    BIGINT NOT NULL,
     id_reserva          BIGINT,
-    CONSTRAINT SAIDA_PK PRIMARY KEY (id_saida),
     CONSTRAINT SAIDA_CONTA_FK FOREIGN KEY (cpf_proprietario)
         REFERENCES CONTA(cpf_proprietario)
         ON UPDATE RESTRICT
@@ -192,11 +183,10 @@ CREATE TABLE SAIDA (
 );
 
 CREATE TABLE LEMBRETE (
-    id_lembrete         BIGINT NOT NULL,
+    id_lembrete         SERIAL PRIMARY KEY,
     dt_lembrete         DATE NOT NULL,
     titulo_lembrete     VARCHAR(30) NOT NULL,
     cpf_proprietario    BIGINT NOT NULL,
-    CONSTRAINT LEMBRETE_PK PRIMARY KEY (id_lembrete),
     CONSTRAINT LEMBRETE_CONTA_FK FOREIGN KEY (cpf_proprietario)
         REFERENCES CONTA(cpf_proprietario)
         ON UPDATE RESTRICT
@@ -204,13 +194,12 @@ CREATE TABLE LEMBRETE (
 );
 
 CREATE TABLE EMPRESTIMO (
-    id_emprestimo       BIGINT NOT NULL,
+    id_emprestimo       SERIAL PRIMARY KEY,
     nome_devedor        VARCHAR(120) NOT NULL,
     dt_emprestimo       DATE NOT NULL,
     dt_limite_pg        DATE,
     cpf_proprietario    BIGINT NOT NULL,
     id_saida            BIGINT NOT NULL,
-    CONSTRAINT EMPRESTIMO_PK PRIMARY KEY (id_emprestimo),
     CONSTRAINT EMPRESTIMO_CONTA_FK FOREIGN KEY (cpf_proprietario)
         REFERENCES CONTA(cpf_proprietario)
         ON UPDATE RESTRICT
@@ -222,7 +211,7 @@ CREATE TABLE EMPRESTIMO (
 );
 
 CREATE TABLE ENTRADA (
-    id_entrada          BIGINT NOT NULL,
+    id_entrada          SERIAL PRIMARY KEY,
     valor_entrada       DECIMAL(9,2) NOT NULL,
     origem              origem NOT NULL,
     descricao_entrada   VARCHAR(100),
@@ -230,7 +219,6 @@ CREATE TABLE ENTRADA (
     cpf_proprietario    BIGINT NOT NULL,
     id_reserva          BIGINT,
     id_emprestimo       BIGINT,
-    CONSTRAINT ENTRADA_PK PRIMARY KEY (id_entrada),
     CONSTRAINT ENTRADA_CONTA_FK FOREIGN KEY (cpf_proprietario)
         REFERENCES CONTA(cpf_proprietario)
         ON UPDATE RESTRICT
@@ -246,10 +234,9 @@ CREATE TABLE ENTRADA (
 );
 
 CREATE TABLE META (
-    id_meta             BIGINT NOT NULL,
+    id_meta             SERIAL PRIMARY KEY,
     valor_meta          DECIMAL(9,2) NOT NULL,
     cpf_proprietario    BIGINT NOT NULL,
-    CONSTRAINT META_PK PRIMARY KEY (id_meta),
     CONSTRAINT META_CONTA_FK FOREIGN KEY (cpf_proprietario)
         REFERENCES CONTA(cpf_proprietario)
         ON UPDATE RESTRICT
@@ -257,11 +244,10 @@ CREATE TABLE META (
 );
 
 CREATE TABLE GASTO_BASE (
-    id_gasto_base       BIGINT NOT NULL,
+    id_gasto_base       SERIAL PRIMARY KEY,
     titulo_gasto        VARCHAR(30) NOT NULL,
     valor_gasto         DECIMAL(9,2) NOT NULL,
     cpf_proprietario    BIGINT NOT NULL,
-    CONSTRAINT GASTO_BASE_PK PRIMARY KEY (id_gasto_base),
     CONSTRAINT GASTO_BASE_CONTA_FK FOREIGN KEY (cpf_proprietario)
         REFERENCES CONTA(cpf_proprietario)
         ON UPDATE RESTRICT

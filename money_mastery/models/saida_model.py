@@ -1,5 +1,5 @@
-from sqlalchemy import (BigInteger, Column, DateTime, Enum, ForeignKey,
-                        Numeric, String)
+from sqlalchemy import (Column, DateTime, Enum, ForeignKey,
+                        Numeric, Integer, String, text)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -10,7 +10,7 @@ metadata = Base.metadata
 class Saida(Base):
     __tablename__ = 'saida'
 
-    id_saida = Column(BigInteger, primary_key=True)
+    id_saida = Column(Integer, primary_key=True, server_default=text("nextval('saida_id_saida_seq'::regclass)"))
     valor_saida = Column(Numeric(9, 2), nullable=False)
     categoria = Column(
         Enum(

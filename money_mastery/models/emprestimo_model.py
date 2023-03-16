@@ -1,4 +1,4 @@
-from sqlalchemy import BigInteger, Column, Date, ForeignKey, String
+from sqlalchemy import Column, Date, ForeignKey, Integer, String, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -9,7 +9,7 @@ metadata = Base.metadata
 class Emprestimo(Base):
     __tablename__ = 'emprestimo'
 
-    id_emprestimo = Column(BigInteger, primary_key=True)
+    id_emprestimo = Column(Integer, primary_key=True, server_default=text("nextval('emprestimo_id_emprestimo_seq'::regclass)"))
     nome_devedor = Column(String(120), nullable=False)
     dt_emprestimo = Column(Date, nullable=False)
     dt_limite_pg = Column(Date)

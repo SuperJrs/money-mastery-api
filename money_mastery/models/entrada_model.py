@@ -1,5 +1,5 @@
-from sqlalchemy import (BigInteger, Column, Date, Enum, ForeignKey, Numeric,
-                        String)
+from sqlalchemy import (Column, Date, Enum, ForeignKey, Numeric,
+                        Integer, String, text)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -10,7 +10,7 @@ metadata = Base.metadata
 class Entrada(Base):
     __tablename__ = 'entrada'
 
-    id_entrada = Column(BigInteger, primary_key=True)
+    id_entrada = Column(Integer, primary_key=True, server_default=text("nextval('entrada_id_entrada_seq'::regclass)"))
     valor_entrada = Column(Numeric(9, 2), nullable=False)
     origem = Column(
         Enum(
