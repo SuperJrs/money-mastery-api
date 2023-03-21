@@ -8,8 +8,8 @@ from ...repository.conta_repo import ContaRepo
 from ...schemas.conta_schema import ContaSchema, ContaSchemaOptional, ContaSchemaFull
 from ..deps import get_auth_service, get_current_user
 
-router = APIRouter(prefix='/user', tags=['Usuário'])
-repo = ContaRepo(database)
+router: APIRouter = APIRouter(prefix='/user', tags=['Usuário'])
+repo: ContaRepo = ContaRepo(database)
 
 
 @router.post('/login', status_code=200)
@@ -17,7 +17,7 @@ async def login_for_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(),
     auth_service: AuthService = Depends(get_auth_service),
 ):
-    user = await auth_service.authenticate_user(
+    user: Conta | None = await auth_service.authenticate_user(
         form_data.username, form_data.password
     )
     if not user:
@@ -26,7 +26,7 @@ async def login_for_access_token(
             detail='Incorrect username or password',
             headers={'WWW-Authenticate': 'Bearer'},
         )
-    access_token = auth_service.create_access_token(str(user.email))
+    access_token: str = auth_service.create_access_token(str(user.email))
 
     return {'access_token': access_token, 'token_type': 'bearer'}
 
