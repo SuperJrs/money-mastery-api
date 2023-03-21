@@ -8,6 +8,8 @@ class Settings(BaseSettings):
     DATABASE: str
     PORT: str
     KEY_JWT: str
+    EMAIL_TEST_USER: str
+    PASSWORD_TEST_USER: str
 
     class Config:
         env_file = '.env'

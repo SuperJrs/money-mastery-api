@@ -1,7 +1,8 @@
-from sqlalchemy import (Column, Date, Enum, ForeignKey, Numeric,
+from sqlalchemy import (Column, DateTime, Enum, ForeignKey, Numeric,
                         Integer, String, text)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+# from .conta_model import Conta
 
 Base = declarative_base()
 metadata = Base.metadata
@@ -19,7 +20,7 @@ class Entrada(Base):
         nullable=False,
     )
     descricao_entrada = Column(String(100))
-    dt_hora_entrada = Column(Date, nullable=False)
+    dt_hora_entrada = Column(DateTime, nullable=False)
     cpf_proprietario = Column(
         ForeignKey(
             'conta.cpf_proprietario', ondelete='CASCADE', onupdate='RESTRICT'
@@ -37,6 +38,6 @@ class Entrada(Base):
         )
     )
 
-    conta = relationship('Conta')
-    emprestimo = relationship('Emprestimo')
-    reserva = relationship('Reserva')
+    # conta = relationship('Conta')
+    # emprestimo = relationship('Emprestimo')
+    # reserva = relationship('Reserva')
