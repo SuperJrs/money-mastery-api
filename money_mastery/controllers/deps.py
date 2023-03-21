@@ -47,7 +47,7 @@ async def get_current_user(
 
 
 async def get_session():
-    session = db.session()
+    session = db.Session()
     try:
         yield session
     finally:

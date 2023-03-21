@@ -72,7 +72,6 @@ class ContaRepo:
             query = select(Conta).where(Conta.cpf_proprietario == cpf)
             conta: Record | None = await self.database.fetch_one(query)
             if conta:
-                print(conta)
                 delete_sql = delete(Conta).where(Conta.cpf_proprietario == cpf)
                 await self.database.execute(delete_sql)
         except Exception as err:
@@ -87,7 +86,6 @@ class ContaRepo:
         return {'msg': 'Conta apagada com sucesso!'}
 
     async def update(self, cpf: int, conta_alterada: ContaSchemaOptional):
-        print()
         try:
             conta_alterada_dict: dict = conta_alterada.dict()
 

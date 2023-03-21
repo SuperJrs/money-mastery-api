@@ -1,16 +1,17 @@
+from databases.interfaces import Record
 from fastapi import APIRouter, status
 
 from ...core.database import database
 from ...repository.conta_repo import ContaRepo
 from ...schemas.conta_schema import ContaSchema, ContaSchemaOptional
 
-router = APIRouter(prefix='/conta', tags=['Admin'])
-repo = ContaRepo(database)
+router: APIRouter = APIRouter(prefix='/conta', tags=['Admin'])
+repo: ContaRepo = ContaRepo(database)
 
 
 @router.get('/', response_model=list[ContaSchema])
 async def obter_contas():
-    result = await repo.gel_all()
+    result: list[Record] = await repo.gel_all()
     return result
 
 
