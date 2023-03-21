@@ -2,10 +2,16 @@ from fastapi.testclient import TestClient
 from faker import Faker
 from typing import Any, Generator
 from urllib.parse import urlencode
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
+from sqlalchemy.orm import sessionmaker
 
 import pytest, copy, random
 
 from money_mastery.main import app
+from money_mastery.core.database import settings_db
+from money_mastery.models.conta_model import Conta
+from money_mastery.core.configs import settings
 
 
 faker: Faker = Faker()
@@ -15,6 +21,14 @@ faker: Faker = Faker()
 def client() -> Generator[TestClient, None, None]:
     with TestClient(app) as c:
         yield c
+        
+        
+@pytest.fixture(scope='session')
+def db() -> Generator:
+    engine = create_engine(settings_db.DB_URL_SYNC)
+    Session: sessionmaker = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    with Session() as sess:
+        yield sess   
 
 
 @pytest.fixture(scope='module')
@@ -53,3 +67,34 @@ def get_token(client: TestClient, conta_random: dict[str, Any]) -> str:
     ).json()
 
     return response['access_token']
+
+
+@pytest.fixture(scope='module')
+def get_token_user_test(client: TestClient):
+    form_data: bytes = urlencode({
+        'username': settings.EMAIL_TEST_USER,
+        'password': settings.PASSWORD_TEST_USER
+    }).encode('utf-8')
+    
+    response: dict[str, str] = client.post(
+        '/api/v1/user/login', 
+        content=form_data.decode(),
+        headers={'Content-Type': 'application/x-www-form-urlencoded'}
+    ).json()
+
+    return response['access_token']
+
+
+@pytest.fixture(scope='module')
+def entrada_random() -> dict[str, float | str]:    
+    origens: list[str] = ['PIX', 'SALARIO', 'EMPRESTIMO', 'RESERVA', 'OUTRO']
+    new_entrada: dict[str, float | str] = dict(
+        valor_entrada=round(random.uniform(2,2000), 2),
+        origem=random.choices(origens)[0],
+        descricao_entrada=faker.pystr(),
+        dt_hora_entrada=str(faker.date_time_between(start_date='-5y', end_date='+1y')),
+        id_reserva=None,
+        id_emprestimo=None
+    ) # type: ignore
+    
+    return new_entrada
