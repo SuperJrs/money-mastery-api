@@ -128,3 +128,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# randons
+generic_crud_databases.py
+generic_crud_session.py

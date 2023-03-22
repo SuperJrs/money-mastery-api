@@ -24,14 +24,18 @@ class FormaPagamentoEnum(str, Enum):
 
 
 class SaidaSchema(BaseModel):
-    id_saida: int
     valor_saida: float
     categoria: CategoriaEnum
     descricao_saida: str
     forma_pagamento: FormaPagamentoEnum
     dt_hora_saida: date
-    cpf_proprietario: int
     id_reserva: int
 
     class Config:
         orm_model = True
+
+
+class SaidaSchemaFull(SaidaSchema):
+    id_saida: int
+    cpf_proprietario: int
+
