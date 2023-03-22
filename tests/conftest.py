@@ -98,3 +98,19 @@ def entrada_random() -> dict[str, float | str]:
     ) # type: ignore
     
     return new_entrada
+
+
+@pytest.fixture(scope='module')
+def saida_random() -> dict[str, float | str]:    
+    categorias: list[str] = ['LAZER', 'ALIMENTACAO', 'SAUDE', 'MORADIA', 'TRANSPORTE', 'EDUCACAO', 'OUTRO']
+    formas_pagamento: list[str] = ['CREDITO', 'DEBITO', 'PIX', 'DINHEIRO', 'RESERVA', 'EMPRESTIMO']
+    new_entrada: dict[str, float | str] = dict(
+        valor_saida=round(random.uniform(2,2000), 2),
+        categoria=random.choices(categorias)[0],
+        descricao_saida=faker.pystr(),
+        dt_hora_saida=str(faker.date_time_between(start_date='-5y', end_date='+1y')),
+        forma_pagamento=random.choices(formas_pagamento)[0],
+        id_reserva=None
+    ) # type: ignore
+    
+    return new_entrada
