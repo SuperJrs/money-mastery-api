@@ -51,5 +51,5 @@ class Saida(Base):
         )
     )
 
-    conta = relationship('Conta')
-    reserva = relationship('Reserva')
+    # conta = relationship('Conta')
+    # reserva = relationship('Reserva')

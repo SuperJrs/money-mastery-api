@@ -1,7 +1,7 @@
-from datetime import date
+from datetime import datetime
 from enum import Enum
-
 from pydantic import BaseModel
+from typing import Optional
 
 
 class CategoriaEnum(str, Enum):
@@ -28,8 +28,8 @@ class SaidaSchema(BaseModel):
     categoria: CategoriaEnum
     descricao_saida: str
     forma_pagamento: FormaPagamentoEnum
-    dt_hora_saida: date
-    id_reserva: int
+    dt_hora_saida: datetime
+    id_reserva: Optional[int]
 
     class Config:
         orm_model = True
@@ -39,3 +39,14 @@ class SaidaSchemaFull(SaidaSchema):
     id_saida: int
     cpf_proprietario: int
 
+
+class SaidaSchemaUp(BaseModel):
+    valor_saida: Optional[float]
+    categoria: Optional[CategoriaEnum]
+    descricao_saida: Optional[str]
+    forma_pagamento: Optional[FormaPagamentoEnum]
+    dt_hora_saida: Optional[datetime]
+    id_reserva: Optional[int]
+
+    class Config:
+        orm_model = True
