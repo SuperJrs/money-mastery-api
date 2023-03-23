@@ -19,4 +19,4 @@ class GastoBase(Base):
         nullable=False,
     )
 
-    conta = relationship('Conta')
+    # conta = relationship('Conta')

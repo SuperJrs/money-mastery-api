@@ -9,7 +9,7 @@ metadata = Base.metadata
 class Lembrete(Base):
     __tablename__ = 'lembrete'
 
-    Column(Integer, primary_key=True, server_default=text("nextval('lembrete_id_lembrete_seq'::regclass)"))
+    id_lembrete = Column(Integer, primary_key=True, server_default=text("nextval('lembrete_id_lembrete_seq'::regclass)"))
     dt_lembrete = Column(Date, nullable=False)
     titulo_lembrete = Column(String(30), nullable=False)
     cpf_proprietario = Column(
@@ -19,4 +19,4 @@ class Lembrete(Base):
         nullable=False,
     )
 
-    conta = relationship('Conta')
+    # conta = relationship('Conta')
