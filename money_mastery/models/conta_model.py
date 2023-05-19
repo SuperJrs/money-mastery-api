@@ -1,21 +1,18 @@
-from sqlalchemy import (
-    BigInteger,
-    CheckConstraint,
-    Column,
-    Date,
-    String
-)
+from sqlalchemy import BigInteger, CheckConstraint, Column, Date, String
 from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
-metadata = Base.metadata
+from ..core.database import settings_db
+# Base = declarative_base()
+# metadata = Base.metadata
 
 
-class Conta(Base):
+class Conta(settings_db.Base):
     __tablename__ = 'conta'
     __table_args__ = (
-        CheckConstraint("(telefone IS NULL) OR (telefone <= '99999999999'::bigint)"),
-        CheckConstraint("cpf_proprietario <= '99999999999'::bigint")
+        CheckConstraint(
+            "(telefone IS NULL) OR (telefone <= '99999999999'::bigint)"
+        ),
+        CheckConstraint("cpf_proprietario <= '99999999999'::bigint"),
     )
 
     cpf_proprietario = Column(BigInteger, primary_key=True)
